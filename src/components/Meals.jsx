@@ -1,20 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Meals = () => {
+  const [loadedMeals, setLoadedMeals] = useState([]);
+
   useEffect(() => {
     async function fetchMeals() {
       try {
         const response = await fetch("http://localhost:3000/meals");
         // if (!response.ok) {
         // }
-        const data = await response.json();
-        //console.log(data);//*TESTING
+
+        const meals = await response.json();
+        setLoadedMeals(meals);
+
+        //console.log(meals);//*TESTING
       } catch (error) {}
     }
+
     fetchMeals();
   }, []);
 
-  return <ul id="meals">Meals</ul>;
+  return (
+    <ul id="meals">
+      {loadedMeals.map((meal) => (
+        <li key={meal.id}>{meal.name}</li>
+      ))}
+    </ul>
+  );
 };
 
 export default Meals;

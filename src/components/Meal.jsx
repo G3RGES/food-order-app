@@ -1,3 +1,4 @@
+import { currencyFormatter } from "./../util/formatting";
 const Meal = ({ mealImg, name, price, description }) => {
   return (
     <li className="meal-item">
@@ -5,7 +6,7 @@ const Meal = ({ mealImg, name, price, description }) => {
         <img src={`http://localhost:3000/${mealImg}`} alt={name} />
         <div>
           <h3>{name}</h3>
-          <p className="meal-item-price">${price}</p>
+          <p className="meal-item-price">{currencyFormatter.format(price)}</p>
           <p className="meal-item-description">{description}</p>
         </div>
         <p className="meal-meal-item-actions">

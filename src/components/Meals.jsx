@@ -25,6 +25,7 @@ const Meals = () => {
     <ul id="meals">
       {loadedMeals.map((meal) => (
         <Meal
+          meal={meal}
           key={meal.id}
           mealImg={meal.image}
           name={meal.name}

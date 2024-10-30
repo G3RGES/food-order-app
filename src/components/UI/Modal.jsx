@@ -5,11 +5,18 @@ const Modal = ({ children, open, className = "" }) => {
   const dialog = useRef();
 
   useEffect(() => {
+    const modal = dialog.current;
+
     if (open) {
-      dialog.current.showModal();
-    } else {
-      dialog.current.close();
+      modal.showModal();
     }
+
+    //* THIS WAS MY APPROACH BUT THE TUTORIAL USED THE CLEANUP METHOD
+    // else {
+    //   modal.close();
+    // }
+
+    return () => modal.close();
   }, [open]);
 
   return createPortal(

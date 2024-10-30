@@ -3,16 +3,18 @@ import Modal from "./UI/Modal";
 import CartContext from "../store/CartContext";
 import { currencyFormatter } from "./../util/formatting";
 import Button from "./UI/Button";
+import Modalcontext from "../store/ModalContext";
 
 const Cart = () => {
-  const openDialog = useRef();
   const { items, removeItem, addItem } = useContext(CartContext);
   const cartTotal = items.reduce((totalPrice, item) => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
+  const { progress } = useContext(Modalcontext);
+
   return (
-    <Modal open={openDialog} className="cart">
+    <Modal className="cart" open={progress === "cart"}>
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => (

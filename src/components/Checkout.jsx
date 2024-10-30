@@ -18,9 +18,11 @@ const Checkout = () => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
+  const handleSubmit = () => {};
+
   return (
     <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
-      <form className="">
+      <form className="" onSubmit={handleSubmit}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>
         <Input label="Full Name" id="full-name" type="text" required />

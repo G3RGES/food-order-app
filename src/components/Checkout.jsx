@@ -18,10 +18,8 @@ const Checkout = () => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
-  const closeCart = () => {};
-
   return (
-    <Modal open={progress === "checkout"} onClose={closeCart}>
+    <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
       <form className="">
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>

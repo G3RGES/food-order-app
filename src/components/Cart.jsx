@@ -18,8 +18,14 @@ const Cart = () => {
     hideCart();
   };
 
+  const showCartModal = () => {
+    showCheckout();
+  };
+
+  const closeCart = () => {};
+
   return (
-    <Modal className="cart" open={progress === "cart"}>
+    <Modal className="cart" open={progress === "cart"} onClose={closeCart}>
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => (
@@ -38,7 +44,7 @@ const Cart = () => {
         <Button textOnly onClick={hideCartModal}>
           Close
         </Button>
-        {items.length > 0 && <Button>Checkout</Button>}
+        {items.length > 0 && <Button onClick={showCartModal}>Checkout</Button>}
       </p>
     </Modal>
   );

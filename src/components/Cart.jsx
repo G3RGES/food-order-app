@@ -28,6 +28,8 @@ const Cart = () => {
             name={item.name}
             quantity={item.quantity}
             price={item.price}
+            onIncrease={() => addItem(item)}
+            onDecrease={() => removeItem(item.id)}
           />
         ))}
       </ul>

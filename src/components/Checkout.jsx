@@ -3,15 +3,25 @@ import Modal from "./UI/Modal";
 import CartContext from "../store/CartContext";
 import { currencyFormatter } from "../util/formatting";
 import Input from "./UI/Input";
+import Button from "./UI/Button";
+import Modalcontext from "../store/ModalContext";
 
 const Checkout = () => {
   const { items } = useContext(CartContext);
+  const { hideCheckout, progress } = useContext(Modalcontext);
+
+  const hideCheckoutModal = () => {
+    hideCheckout();
+  };
+
   const cartTotal = items.reduce((totalPrice, item) => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
+  const closeCart = () => {};
+
   return (
-    <Modal>
+    <Modal open={progress === "checkout"} onClose={closeCart}>
       <form className="">
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>
@@ -25,7 +35,10 @@ const Checkout = () => {
         </div>
 
         <p className="modal-actions">
-          <button type="submit">Place Order</button>
+          <Button type="button" textOnly onClick={hideCheckoutModal}>
+            Close
+          </Button>
+          <Button type="submit">Place Order</Button>
         </p>
       </form>
     </Modal>

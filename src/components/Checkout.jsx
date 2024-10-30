@@ -23,6 +23,19 @@ const Checkout = () => {
 
     const formData = new FormData(event.target);
     const customerData = Object.fromEntries(formData.entries());
+
+    fetch("http://localhost:3000/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order: {
+          items,
+          customer: customerData,
+        },
+      }),
+    });
   };
 
   return (
@@ -30,7 +43,7 @@ const Checkout = () => {
       <form className="" onSubmit={handleSubmit}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>
-        <Input label="Full Name" id="full-name" type="text" required />
+        <Input label="Full Name" id="name" type="text" required />
         <Input label="E-Mail" id="email" type="email" required />
         <Input label="Street Address" id="street" type="text" required />
 

@@ -11,7 +11,11 @@ const Cart = () => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
-  const { progress } = useContext(Modalcontext);
+  const { progress, hideCart, showCheckout } = useContext(Modalcontext);
+
+  const hideCartModal = () => {
+    hideCart();
+  };
 
   return (
     <Modal className="cart" open={progress === "cart"}>
@@ -25,7 +29,9 @@ const Cart = () => {
       </ul>
       <p className="cart-total">{currencyFormatter.format(cartTotal)}</p>
       <p className="modal-actions">
-        <Button textOnly>Close</Button>
+        <Button textOnly onClick={hideCartModal}>
+          Close
+        </Button>
         <Button>Checkout</Button>
       </p>
     </Modal>

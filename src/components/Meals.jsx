@@ -16,10 +16,6 @@ const Meals = () => {
     return <p>Loading...</p>;
   }
 
-  // if (!loadedMeals) {
-  //   return <p>No meals found.</p>;
-  // }
-
   return (
     <ul id="meals">
       {loadedMeals.map((meal) => (

@@ -22,10 +22,12 @@ const Cart = () => {
     showCheckout();
   };
 
-  const closeCart = () => {};
-
   return (
-    <Modal className="cart" open={progress === "cart"} onClose={closeCart}>
+    <Modal
+      className="cart"
+      open={progress === "cart"}
+      onClose={progress === "cart" && hideCartModal}
+    >
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => (

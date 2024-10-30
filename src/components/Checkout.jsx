@@ -18,7 +18,12 @@ const Checkout = () => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const customerData = Object.fromEntries(formData.entries());
+  };
 
   return (
     <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>

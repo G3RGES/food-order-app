@@ -5,10 +5,27 @@ import { currencyFormatter } from "../util/formatting";
 import Input from "./UI/Input";
 import Button from "./UI/Button";
 import Modalcontext from "../store/ModalContext";
+import useHttp from "../hooks/useHttp.js";
+import Error from "./Error.jsx";
+
+const requestConfig = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
 
 const Checkout = () => {
   const { items } = useContext(CartContext);
   const { hideCheckout, progress } = useContext(Modalcontext);
+
+  const {
+    data,
+    isLoading: isSending,
+    error,
+    sendRequest,
+    clearData,
+  } = useHttp("http://localhost:3000/orders", requestConfig);
 
   const hideCheckoutModal = () => {
     hideCheckout();
@@ -24,19 +41,41 @@ const Checkout = () => {
     const formData = new FormData(event.target);
     const customerData = Object.fromEntries(formData.entries());
 
-    fetch("http://localhost:3000/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    sendRequest(
+      JSON.stringify({
         order: {
           items,
           customer: customerData,
         },
-      }),
-    });
+      })
+    );
+
+    // fetch("http://localhost:3000/orders", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     order: {
+    //       items,
+    //       customer: customerData,
+    //     },
+    //   }),
+    // });
   };
+
+  let actions = (
+    <>
+      <Button type="button" textOnly onClick={handleClose}>
+        Close
+      </Button>
+      <Button>Submit Order</Button>
+    </>
+  );
+
+  if (isSending) {
+    actions = <span>Sending order data...</span>;
+  }
 
   return (
     <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
@@ -52,12 +91,7 @@ const Checkout = () => {
           <Input label="City" id="city" type="text" required />
         </div>
 
-        <p className="modal-actions">
-          <Button type="button" textOnly onClick={hideCheckoutModal}>
-            Close
-          </Button>
-          <Button type="submit">Place Order</Button>
-        </p>
+        <p className="modal-actions">{actions}</p>
       </form>
     </Modal>
   );

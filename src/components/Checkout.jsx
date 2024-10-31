@@ -16,7 +16,7 @@ const requestConfig = {
 };
 
 const Checkout = () => {
-  const { items } = useContext(CartContext);
+  const { items, clearCart } = useContext(CartContext);
   const { hideCheckout, progress } = useContext(Modalcontext);
 
   const {
@@ -55,6 +55,12 @@ const Checkout = () => {
     hideCheckout();
   };
 
+  const handleFinish = () => {
+    hideCheckout();
+    clearCart();
+    clearData();
+  };
+
   let actions = (
     <>
       <Button type="button" textOnly onClick={handleClose}>
@@ -66,6 +72,18 @@ const Checkout = () => {
 
   if (isSending) {
     actions = <span>Loading...</span>;
+  }
+
+  if (data && !error) {
+    return (
+      <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
+        <h2>Success</h2>
+        <p>Order submied successfuly</p>
+        <p className="modal-actions">
+          <Button onClick={handleFinish}>Okay</Button>
+        </p>
+      </Modal>
+    );
   }
 
   return (
@@ -81,6 +99,8 @@ const Checkout = () => {
           <Input label="Postal Code" id="postal-code" type="text" />
           <Input label="City" id="city" type="text" required />
         </div>
+
+        {error && <Error title="Failed to submit order" message={error} />}
 
         <p className="modal-actions">{actions}</p>
       </form>

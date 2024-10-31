@@ -64,6 +64,10 @@ const Checkout = () => {
     // });
   };
 
+  const handleClose = () => {
+    hideCheckout();
+  };
+
   let actions = (
     <>
       <Button type="button" textOnly onClick={handleClose}>

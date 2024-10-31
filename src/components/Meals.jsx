@@ -10,10 +10,10 @@ const Meals = () => {
     loading,
   } = useHttp("http://localhost:3000/meals", requestConfig, []);
 
-  // console.log(loadedMeals);
+  // console.log(loadedMeals); //* TESTING
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="center">Loading...</p>;
   }
 
   return (

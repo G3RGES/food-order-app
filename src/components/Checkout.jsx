@@ -49,19 +49,6 @@ const Checkout = () => {
         },
       })
     );
-
-    // fetch("http://localhost:3000/orders", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     order: {
-    //       items,
-    //       customer: customerData,
-    //     },
-    //   }),
-    // });
   };
 
   const handleClose = () => {
@@ -78,7 +65,7 @@ const Checkout = () => {
   );
 
   if (isSending) {
-    actions = <span>Sending order data...</span>;
+    actions = <span>Loading...</span>;
   }
 
   return (

@@ -4,37 +4,37 @@ import Meal from "./Meal";
 
 const requestConfig = {};
 
-const Meals = () => {
+export default function Meals() {
   const {
     data: loadedMeals,
+    isLoading,
     error,
-    loading,
   } = useHttp("http://localhost:3000/meals", requestConfig, []);
 
-  // console.log(loadedMeals); //* TESTING
-
-  if (loading) {
-    return <p className="center">Loading...</p>;
+  if (isLoading) {
+    return <p className="center">Fetching meals...</p>;
   }
 
   if (error) {
     return <Error title="Failed to fetch meals" message={error} />;
   }
 
+  // if (!data) {
+  //   return <p>No meals found.</p>
+  // }
+
   return (
     <ul id="meals">
       {loadedMeals.map((meal) => (
         <Meal
-          meal={meal}
           key={meal.id}
+          meal={meal}
           mealImg={meal.image}
-          name={meal.name}
           price={meal.price}
           description={meal.description}
+          name={meal.name}
         />
       ))}
     </ul>
   );
-};
-
-export default Meals;
+}

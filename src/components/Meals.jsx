@@ -1,4 +1,5 @@
 import useHttp from "../hooks/useHttp";
+import Error from "./Error";
 import Meal from "./Meal";
 
 const requestConfig = {};
@@ -14,6 +15,10 @@ const Meals = () => {
 
   if (loading) {
     return <p className="center">Loading...</p>;
+  }
+
+  if (error) {
+    return <Error title="Failed to fetch meals" message={error} />;
   }
 
   return (

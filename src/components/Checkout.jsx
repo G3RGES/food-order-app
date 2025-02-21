@@ -35,10 +35,7 @@ const Checkout = () => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
+  const checkoutAction = (fd) => {
     const customerData = Object.fromEntries(formData.entries());
 
     sendRequest(
@@ -78,7 +75,7 @@ const Checkout = () => {
     return (
       <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
         <h2>Success</h2>
-        <p>Order submied successfuly</p>
+        <p>Order submitted successfully</p>
         <p className="modal-actions">
           <Button onClick={handleFinish}>Okay</Button>
         </p>
@@ -88,7 +85,7 @@ const Checkout = () => {
 
   return (
     <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
-      <form className="" onSubmit={handleSubmit}>
+      <form className="" actions={checkoutAction}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>
         <Input label="Full Name" id="name" type="text" required />

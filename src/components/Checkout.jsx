@@ -1,12 +1,13 @@
 import { useContext } from "react";
 import Modal from "./UI/Modal";
 import CartContext from "../store/CartContext";
-import { currencyFormatter } from "../util/formatting";
+
 import Input from "./UI/Input";
 import Button from "./UI/Button";
 import Modalcontext from "../store/ModalContext";
 import useHttp from "../hooks/useHttp.js";
 import Error from "./Error.jsx";
+import { currencyFormatter } from "./../util/formatting";
 
 const requestConfig = {
   method: "POST",
@@ -35,10 +36,10 @@ const Checkout = () => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
-  const checkoutAction = (fd) => {
-    const customerData = Object.fromEntries(formData.entries());
+  const checkoutAction = async (fd) => {
+    const customerData = Object.fromEntries(fd.entries());
 
-    sendRequest(
+    await sendRequest(
       JSON.stringify({
         order: {
           items,
@@ -85,7 +86,7 @@ const Checkout = () => {
 
   return (
     <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
-      <form className="" actions={checkoutAction}>
+      <form className="" action={checkoutAction}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>
         <Input label="Full Name" id="name" type="text" required />

@@ -1,12 +1,13 @@
-import { useContext } from "react";
+import { useContext, useActionState } from "react";
 import Modal from "./UI/Modal";
 import CartContext from "../store/CartContext";
-import { currencyFormatter } from "../util/formatting";
+
 import Input from "./UI/Input";
 import Button from "./UI/Button";
 import Modalcontext from "../store/ModalContext";
 import useHttp from "../hooks/useHttp.js";
 import Error from "./Error.jsx";
+import { currencyFormatter } from "./../util/formatting";
 
 const requestConfig = {
   method: "POST",
@@ -19,13 +20,10 @@ const Checkout = () => {
   const { items, clearCart } = useContext(CartContext);
   const { hideCheckout, progress } = useContext(Modalcontext);
 
-  const {
-    data,
-    isLoading: isSending,
-    error,
-    sendRequest,
-    clearData,
-  } = useHttp("http://localhost:3000/orders", requestConfig);
+  const { data, error, sendRequest, clearData } = useHttp(
+    "http://localhost:3000/orders",
+    requestConfig
+  );
 
   const hideCheckoutModal = () => {
     hideCheckout();
@@ -35,13 +33,10 @@ const Checkout = () => {
     return totalPrice + item.price * item.quantity;
   }, 0);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const checkoutAction = async (prevState, fd) => {
+    const customerData = Object.fromEntries(fd.entries());
 
-    const formData = new FormData(event.target);
-    const customerData = Object.fromEntries(formData.entries());
-
-    sendRequest(
+    await sendRequest(
       JSON.stringify({
         order: {
           items,
@@ -50,6 +45,8 @@ const Checkout = () => {
       })
     );
   };
+
+  const [formState, formAction, isSending] = useActionState(checkoutAction);
 
   const handleClose = () => {
     hideCheckout();
@@ -78,7 +75,7 @@ const Checkout = () => {
     return (
       <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
         <h2>Success</h2>
-        <p>Order submied successfuly</p>
+        <p>Order submitted successfully</p>
         <p className="modal-actions">
           <Button onClick={handleFinish}>Okay</Button>
         </p>
@@ -88,7 +85,7 @@ const Checkout = () => {
 
   return (
     <Modal open={progress === "checkout"} onClose={hideCheckoutModal}>
-      <form className="" onSubmit={handleSubmit}>
+      <form className="" action={formAction}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)} </p>
         <Input label="Full Name" id="name" type="text" required />
